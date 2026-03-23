@@ -1,0 +1,422 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-topic: #3b82f6;
+  --color-category: #22c55e;
+  --color-skill: #6b7280;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 思维导图节点样式 */
+.node-topic {
+  @apply bg-blue-500 text-white rounded-lg shadow-lg;
+}
+
+.node-category {
+  @apply bg-green-500 text-white rounded-md shadow;
+}
+
+.node-skill {
+  @apply bg-gray-200 text-gray-800 rounded-sm shadow-sm;
+}
+
+/* 所见即所得编辑器样式 */
+.wysiwyg-editor,
+.wysiwyg-preview {
+  min-height: 100%;
+  line-height: 1.75;
+  color: #1f2937;
+}
+
+.dark .wysiwyg-editor,
+.dark .wysiwyg-preview {
+  color: #e5e7eb;
+}
+
+.wysiwyg-editor {
+  outline: none;
+}
+
+.wysiwyg-editor:empty::before {
+  content: '开始输入内容...';
+  color: #9ca3af;
+}
+
+.wysiwyg-editor h1,
+.wysiwyg-preview h1 {
+  font-size: 2rem;
+  margin: 0.7em 0 0.5em;
+  font-weight: 700;
+}
+
+.wysiwyg-editor h2,
+.wysiwyg-preview h2 {
+  font-size: 1.5rem;
+  margin: 0.8em 0 0.45em;
+  font-weight: 700;
+}
+
+.wysiwyg-editor h3,
+.wysiwyg-preview h3 {
+  font-size: 1.2rem;
+  margin: 0.8em 0 0.4em;
+  font-weight: 600;
+}
+
+.wysiwyg-editor p,
+.wysiwyg-preview p,
+.wysiwyg-editor ul,
+.wysiwyg-preview ul,
+.wysiwyg-editor ol,
+.wysiwyg-preview ol,
+.wysiwyg-editor blockquote,
+.wysiwyg-preview blockquote,
+.wysiwyg-editor pre,
+.wysiwyg-preview pre {
+  margin: 0.65em 0;
+}
+
+.wysiwyg-editor ul,
+.wysiwyg-preview ul {
+  padding-left: 1.4em;
+  list-style: disc;
+}
+
+.wysiwyg-editor ol,
+.wysiwyg-preview ol {
+  padding-left: 1.4em;
+  list-style: decimal;
+}
+
+.wysiwyg-editor blockquote,
+.wysiwyg-preview blockquote {
+  border-left: 4px solid #93c5fd;
+  padding-left: 0.8em;
+  color: #4b5563;
+}
+
+.dark .wysiwyg-editor blockquote,
+.dark .wysiwyg-preview blockquote {
+  border-left-color: #60a5fa;
+  color: #d1d5db;
+}
+
+.wysiwyg-editor code,
+.wysiwyg-preview code {
+  background-color: #f3f4f6;
+  border-radius: 0.35rem;
+  padding: 0.12rem 0.35rem;
+  font-size: 0.9em;
+}
+
+.dark .wysiwyg-editor code,
+.dark .wysiwyg-preview code {
+  background-color: #1f2937;
+}
+
+.wysiwyg-editor pre,
+.wysiwyg-preview pre {
+  background-color: #f3f4f6;
+  border-radius: 0.65rem;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+}
+
+.dark .wysiwyg-editor pre,
+.dark .wysiwyg-preview pre {
+  background-color: #111827;
+}
+
+.wysiwyg-editor img,
+.wysiwyg-preview img,
+.wysiwyg-editor video,
+.wysiwyg-preview video {
+  max-width: 100%;
+  border-radius: 0.6rem;
+  margin: 0.5rem 0;
+}
+
+.wysiwyg-editor .sn-math-inline,
+.wysiwyg-preview .sn-math-inline {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 0.08rem;
+}
+
+.wysiwyg-editor .sn-math-block,
+.wysiwyg-preview .sn-math-block {
+  display: block;
+  margin: 0.9rem 0;
+  padding: 0.45rem 0.2rem;
+  overflow-x: auto;
+}
+
+.wysiwyg-editor .sn-math-display,
+.wysiwyg-preview .sn-math-display {
+  display: block;
+  margin: 0.9rem 0;
+  padding: 0.45rem 0.2rem;
+  overflow-x: auto;
+}
+
+.mindmap-preview-content {
+  color: #1f2937;
+  line-height: 1.8;
+}
+
+.dark .mindmap-preview-content {
+  color: #e5e7eb;
+}
+
+.mindmap-preview-content h1,
+.mindmap-preview-content h2,
+.mindmap-preview-content h3 {
+  margin-top: 1.1em;
+  margin-bottom: 0.45em;
+  font-weight: 700;
+}
+
+.mindmap-preview-content h1 {
+  font-size: 1.8rem;
+}
+
+.mindmap-preview-content h2 {
+  font-size: 1.45rem;
+}
+
+.mindmap-preview-content h3 {
+  font-size: 1.2rem;
+}
+
+.mindmap-preview-content p,
+.mindmap-preview-content ul,
+.mindmap-preview-content ol,
+.mindmap-preview-content blockquote,
+.mindmap-preview-content pre {
+  margin: 0.72em 0;
+}
+
+.mindmap-preview-content ul,
+.mindmap-preview-content ol {
+  padding-left: 1.4em;
+}
+
+.mindmap-preview-content blockquote {
+  border-left: 4px solid #93c5fd;
+  padding-left: 0.8em;
+  color: #4b5563;
+}
+
+.dark .mindmap-preview-content blockquote {
+  border-left-color: #60a5fa;
+  color: #d1d5db;
+}
+
+.mindmap-preview-content code {
+  background: #f3f4f6;
+  border-radius: 0.35rem;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.9em;
+}
+
+.dark .mindmap-preview-content code {
+  background: #1f2937;
+}
+
+.mindmap-preview-content pre {
+  background: #f3f4f6;
+  border-radius: 0.75rem;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+}
+
+.dark .mindmap-preview-content pre {
+  background: #111827;
+}
+
+.mindmap-preview-content .sn-math-inline {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.mindmap-preview-content .sn-math-block {
+  display: block;
+  margin: 0.9rem 0;
+  padding: 0.4rem 0;
+  overflow-x: auto;
+}
+
+.mindmap-preview-content .mindmap-callout {
+  border-radius: 0.9rem;
+  padding: 0.85rem 1rem;
+  margin: 0.85rem 0;
+  border: 1px solid transparent;
+}
+
+.mindmap-preview-content .mindmap-callout-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.45rem;
+}
+
+.mindmap-preview-content .mindmap-callout-body > *:first-child {
+  margin-top: 0;
+}
+
+.mindmap-preview-content .mindmap-callout-body > *:last-child {
+  margin-bottom: 0;
+}
+
+.mindmap-preview-content .mindmap-callout-tip,
+.mindmap-preview-content .mindmap-callout-note {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.mindmap-preview-content .mindmap-callout-tip .mindmap-callout-title,
+.mindmap-preview-content .mindmap-callout-note .mindmap-callout-title {
+  color: #1d4ed8;
+}
+
+.mindmap-preview-content .mindmap-callout-example {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.mindmap-preview-content .mindmap-callout-example .mindmap-callout-title {
+  color: #15803d;
+}
+
+.mindmap-preview-content .mindmap-callout-question {
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.mindmap-preview-content .mindmap-callout-question .mindmap-callout-title {
+  color: #c2410c;
+}
+
+.mindmap-preview-content .mindmap-callout-warning {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.mindmap-card-editor {
+  min-height: 220px;
+}
+
+.hybrid-md-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.hybrid-md-block-rendered {
+  border-radius: 0.35rem;
+  border: 1px solid transparent;
+  padding: 0.12rem 0.2rem;
+  cursor: text;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.hybrid-md-block-rendered:hover {
+  border-color: rgba(59, 130, 246, 0.25);
+  background: rgba(59, 130, 246, 0.03);
+}
+
+.hybrid-md-block-active {
+  border-radius: 0.35rem;
+  background: rgba(59, 130, 246, 0.03);
+}
+
+.hybrid-md-textarea {
+  width: 100%;
+  min-height: 28px;
+  resize: none;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  color: #1f2937;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  padding: 0.18rem 0.2rem;
+  outline: none;
+}
+
+.dark .hybrid-md-textarea {
+  background: transparent;
+  color: #e5e7eb;
+}
+
+.hybrid-md-empty {
+  border: 1px dashed #cbd5e1;
+  border-radius: 0.65rem;
+  padding: 0.8rem;
+  color: #9ca3af;
+  cursor: text;
+}
+
+.hybrid-md-compact .hybrid-md-textarea {
+  min-height: 24px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.hybrid-md-compact .hybrid-md-block-rendered {
+  padding: 0.08rem 0.16rem;
+}
+
+.mindmap-preview-content .mindmap-callout-warning .mindmap-callout-title {
+  color: #b91c1c;
+}
+
+.dark .mindmap-preview-content .mindmap-callout-tip,
+.dark .mindmap-preview-content .mindmap-callout-note {
+  background: rgba(30, 58, 138, 0.25);
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+.dark .mindmap-preview-content .mindmap-callout-example {
+  background: rgba(20, 83, 45, 0.28);
+  border-color: rgba(74, 222, 128, 0.45);
+}
+
+.dark .mindmap-preview-content .mindmap-callout-question {
+  background: rgba(154, 52, 18, 0.25);
+  border-color: rgba(251, 146, 60, 0.45);
+}
+
+.dark .mindmap-preview-content .mindmap-callout-warning {
+  background: rgba(127, 29, 29, 0.25);
+  border-color: rgba(248, 113, 113, 0.45);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

@@ -1,0 +1,72 @@
+# Dependencies and source code directories to exclude
+# Keep only analysis, skills, and Skill-Note
+# Explicitly ignore the downloaded source directories
+drawio-dev/
+joplin-dev/
+Noote-main/
+siyuan-master/
+Zettlr-develop/
+*/drawio-dev/
+*/joplin-dev/
+*/Noote-main/
+*/siyuan-master/
+*/Zettlr-develop/
+
+# Halo and Claude specific files (contain local config)
+.claude/
+.halo/
+
+# OS generated files
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trash
+ehthumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+.tox/
+.nox/
+venv/
+env/
+ENV/
+
+# Build files and Rust compilation artifacts
+dist/
+build/
+target/
+*.egg-info/
+*.egg
+wheels/
+*.whl
+
+# Editor directories and files
+.vscode/
+!.vscode/extensions.json
+.idea
+*.swp
+*.swo
+*~
+*.sublime-*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
