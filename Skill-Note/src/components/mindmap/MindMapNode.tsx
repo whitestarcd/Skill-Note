@@ -14,9 +14,10 @@ interface MindMapNodeProps {
   type: 'document' | 'category' | 'skill';
   data: Document | Category | Skill;
   position: { x: number; y: number };
+  onLeftClickSelect?: (id: string, type: 'document' | 'category' | 'skill') => void;
 }
 
-export function MindMapNode({ id, type, data, position }: MindMapNodeProps) {
+export function MindMapNode({ id, type, data, position, onLeftClickSelect }: MindMapNodeProps) {
   const { selectedNodeId, setSelectedNode, updateDocument, updateCategory, updateSkill, deleteDocument, deleteCategory, deleteSkill, addCategory, addSkill } = useSkillStore();
   const { nodesDraggable } = useUIStore();
   const [isEditing, setIsEditing] = useState(false);
@@ -122,8 +123,13 @@ export function MindMapNode({ id, type, data, position }: MindMapNodeProps) {
   // 处理点击选中
   const handleClick = (e: React.MouseEvent) => {
     if (!isEditing) {
+      if (contextMenu) {
+        // Context menu interactions should never be treated as a node left-click select.
+        return;
+      }
       e.stopPropagation();
       setSelectedNode(id, type);
+      onLeftClickSelect?.(id, type);
     }
   };
 
@@ -167,6 +173,11 @@ export function MindMapNode({ id, type, data, position }: MindMapNodeProps) {
     // The component will enter editing mode automatically if title is empty
   };
 
+  const handleAddCategoryClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    handleAddCategory();
+  };
+
   // Handle add skill - create placeholder and enter inline editing
   const handleAddSkill = () => {
     const newSkillId = `skill-${Date.now()}`;
@@ -187,9 +198,19 @@ export function MindMapNode({ id, type, data, position }: MindMapNodeProps) {
     // The new node will handle its own editing - component will enter editing mode automatically if title is empty
   };
 
+  const handleAddSkillClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    handleAddSkill();
+  };
+
   const openDeleteDialog = () => {
     setContextMenu(null);
     setDeleteDialog(true);
+  };
+
+  const openDeleteDialogClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    openDeleteDialog();
   };
 
   const executeCascadeDelete = () => {
@@ -445,6 +466,8 @@ export function MindMapNode({ id, type, data, position }: MindMapNodeProps) {
           width={120}
           height={130}
           style={{ overflow: 'visible' }}
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
         >
           <div
             ref={menuRef}
@@ -454,7 +477,7 @@ export function MindMapNode({ id, type, data, position }: MindMapNodeProps) {
             {(type === 'document' || type === 'category' || type === 'skill') && (
               <button
                 className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2 border-b border-gray-200 dark:border-gray-700"
-                onClick={handleAddCategory}
+                onClick={handleAddCategoryClick}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 5v14M5 12h14"/>
@@ -466,7 +489,7 @@ export function MindMapNode({ id, type, data, position }: MindMapNodeProps) {
             {/* Add Skill - show for all node types */}
             <button
               className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-600 dark:hover:text-green-400 flex items-center gap-2"
-              onClick={handleAddSkill}
+              onClick={handleAddSkillClick}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 5v14M5 12h14"/>
@@ -477,7 +500,7 @@ export function MindMapNode({ id, type, data, position }: MindMapNodeProps) {
             {/* Delete - show for all node types */}
             <button
               className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400 flex items-center gap-2 border-t border-gray-200 dark:border-gray-700"
-              onClick={openDeleteDialog}
+              onClick={openDeleteDialogClick}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>

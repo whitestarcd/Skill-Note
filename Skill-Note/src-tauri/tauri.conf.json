@@ -20,7 +20,14 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": [
+          "$DOCUMENT/Skill-Note/**",
+          "$APPDATA/com.skillnote.app/**"
+        ]
+      }
     }
   },
   "bundle": {

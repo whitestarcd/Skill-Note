@@ -3,7 +3,7 @@
  * 参考 draw.io 的 orthogonal-edge-router 实现最简连线算法
  */
 
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { useSkillStore } from '../../stores/skillStore';
 import { useUIStore } from '../../stores/uiStore';
 import { MindMapNode } from './MindMapNode';
@@ -37,6 +37,7 @@ export function MindMapView() {
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
   const [panStart, setPanStart] = useState({ x: 0, y: 0 });
+  const [previewTriggerNodeId, setPreviewTriggerNodeId] = useState<string | null>(null);
 
   // 获取当前文档的数据
   const currentDocument = currentDocumentId ? documents.find((t) => t.id === currentDocumentId) : null;
@@ -288,10 +289,30 @@ export function MindMapView() {
     return [selectedItem, ...childItems];
   })();
 
+  useEffect(() => {
+    if (!nodePreviewEnabled) {
+      setPreviewTriggerNodeId(null);
+    }
+  }, [nodePreviewEnabled]);
+
+  useEffect(() => {
+    if (!selectedNodeId) {
+      setPreviewTriggerNodeId(null);
+    }
+  }, [selectedNodeId]);
+
+  const shouldShowPreviewOverlay =
+    viewMode === 'mindmap' &&
+    nodePreviewEnabled &&
+    previewItems.length > 0 &&
+    selectedNodeId !== null &&
+    previewTriggerNodeId === selectedNodeId;
+
   // 处理画布点击（取消选择）
   const handleCanvasClick = (e: React.MouseEvent) => {
     if (e.target === svgRef.current) {
       setSelectedNode(null, null);
+      setPreviewTriggerNodeId(null);
     }
   };
 
@@ -400,6 +421,10 @@ export function MindMapView() {
               type={node.type}
               data={node.data}
               position={node.position}
+              onLeftClickSelect={(nodeId) => {
+                // 卡片仅由思维导图中的左键点击触发，避免其它来源选中时自动弹出。
+                setPreviewTriggerNodeId(nodeId);
+              }}
             />
           ))}
         </g>
@@ -407,11 +432,18 @@ export function MindMapView() {
       </svg>
       </div>
 
-      {viewMode === 'mindmap' && nodePreviewEnabled && previewItems.length > 0 && selectedNodeId && (
+      {shouldShowPreviewOverlay && selectedNodeId && (
         <NodeContentPreviewOverlay
           items={previewItems}
           initialNodeId={selectedNodeId}
-          onClose={() => setSelectedNode(null, null)}
+          mediaDirectory={`${currentDocument.title || 'untitled'}-${currentDocument.id}`}
+          onClose={() => {
+            setSelectedNode(null, null);
+            setPreviewTriggerNodeId(null);
+          }}
+          // 切换卡片仅用于浏览/编辑当前预览集合，不改变全局选中节点。
+          // 这样用户可以持续查看“原选中节点 + 其子节点”的完整内容上下文，
+          // 避免切卡后主选中节点被改写，导致原节点内容从视图中消失。
           onUpdateTitle={(nodeId, nodeType, title) => {
             if (nodeType === 'document') {
               updateDocument(nodeId, { title });

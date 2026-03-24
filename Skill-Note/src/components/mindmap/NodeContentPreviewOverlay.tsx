@@ -18,6 +18,7 @@ interface NodeContentPreviewOverlayProps {
   onClose: () => void;
   onUpdateMarkdown: (id: string, type: PreviewNodeType, markdown: string) => void;
   onUpdateTitle: (id: string, type: PreviewNodeType, title: string) => void;
+  mediaDirectory?: string;
 }
 
 function renderTypeLabel(type: PreviewNodeType) {
@@ -37,6 +38,7 @@ export function NodeContentPreviewOverlay({
   onClose,
   onUpdateMarkdown,
   onUpdateTitle,
+  mediaDirectory,
 }: NodeContentPreviewOverlayProps) {
   const MIN_CARD_WIDTH = 260;
   const MIN_CARD_HEIGHT = 320;
@@ -245,6 +247,21 @@ export function NodeContentPreviewOverlay({
         <div
           className="relative w-full overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-2xl"
           style={{ height: cardSize.height }}
+          onWheel={(event) => {
+            // 默认保留滚轮滚动内容，按住 Ctrl 时才调整卡片宽度。
+            if (!event.ctrlKey) return;
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const maxWidth = Math.max(MIN_CARD_WIDTH, window.innerWidth - 40);
+            const widthDelta = -event.deltaY * 0.45;
+
+            setCardSize((prev) => ({
+              ...prev,
+              width: Math.min(Math.max(MIN_CARD_WIDTH, prev.width + widthDelta), maxWidth),
+            }));
+          }}
         >
           <div
             className="absolute top-0 left-0 right-0 h-10 cursor-move z-10"
@@ -316,8 +333,13 @@ export function NodeContentPreviewOverlay({
                 onChange={(nextMarkdown) => onUpdateMarkdown(activeItem.id, activeItem.type, nextMarkdown)}
                 className="mindmap-card-editor"
                 compact
+                mediaDirectory={mediaDirectory}
               />
             </section>
+
+            <div className="pointer-events-none absolute bottom-2 right-3 text-[11px] text-gray-500/70 dark:text-gray-300/55">
+              Ctrl + 滚轮：调宽
+            </div>
 
             {canScroll && showNavigator && (
               <aside className="w-44 border-l border-gray-200 dark:border-gray-700 bg-gray-50/80 dark:bg-gray-900/60 flex flex-col">

@@ -84,6 +84,21 @@ npm install
 npm run tauri build
 ```
 
+#### 仅生成 EXE（不生成安装程序）
+
+如果你只需要可执行文件（`skill-note.exe`），不需要 `*-setup.exe` 安装包：
+
+```bash
+npm install
+npm run tauri build -- --no-bundle
+```
+
+生成的 EXE 默认在：
+
+```text
+src-tauri/target/release/skill-note.exe
+```
+
 #### 打包产物位置
 
 默认生成在：
@@ -281,6 +296,21 @@ Run in the project root directory:
 ```bash
 npm install
 npm run tauri build
+```
+
+#### Build EXE Only (No Installer)
+
+If you only need a portable executable (`skill-note.exe`) and do not want the `*-setup.exe` installer:
+
+```bash
+npm install
+npm run tauri build -- --no-bundle
+```
+
+The EXE is generated at:
+
+```text
+src-tauri/target/release/skill-note.exe
 ```
 
 #### Output Location

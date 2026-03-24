@@ -6,6 +6,7 @@ interface MarkdownEditorProps {
   onChange: (value: string) => void;
   onStatsChange?: (stats: { lines: number; words: number; chars: number }) => void;
   onMediaInsert?: (type: 'image' | 'video', url: string) => void;
+  mediaDirectory?: string;
 }
 
 function calculateStats(content: string) {
@@ -19,6 +20,7 @@ export function MarkdownEditor({
   initialValue,
   onChange,
   onStatsChange,
+  mediaDirectory,
 }: MarkdownEditorProps) {
   const stats = useMemo(() => calculateStats(initialValue), [initialValue]);
 
@@ -33,6 +35,7 @@ export function MarkdownEditor({
           value={initialValue}
           onChange={onChange}
           enableInsertEvent
+          mediaDirectory={mediaDirectory}
           className="h-full"
           placeholder="开始输入 Markdown，点击任意区块可编辑原文"
         />

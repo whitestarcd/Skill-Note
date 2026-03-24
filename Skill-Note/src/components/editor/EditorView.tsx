@@ -11,7 +11,7 @@ import { MarkdownEditor } from './MarkdownEditor';
 import { ContentType } from '../../models';
 
 export function EditorView() {
-  const { selectedNodeId, selectedNodeType, documents, categories, skills, updateDocument, updateCategory, updateSkill } = useSkillStore();
+  const { currentDocumentId, selectedNodeId, selectedNodeType, documents, categories, skills, updateDocument, updateCategory, updateSkill } = useSkillStore();
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
   const titleInputRef = useRef<HTMLInputElement>(null);
@@ -81,6 +81,10 @@ export function EditorView() {
   };
 
   const currentNode = getCurrentNode();
+  const currentDocument = currentDocumentId ? documents.find((doc) => doc.id === currentDocumentId) : null;
+  const mediaDirectory = currentDocument
+    ? `${currentDocument.title || 'untitled'}-${currentDocument.id}`
+    : 'untitled-document';
 
   // 更新内容和标题状态
   useEffect(() => {
@@ -146,6 +150,7 @@ export function EditorView() {
           initialValue={content}
           onChange={handleContentChange}
           onMediaInsert={handleMediaInsert}
+          mediaDirectory={mediaDirectory}
         />
       </div>
     </div>
